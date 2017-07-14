@@ -1,12 +1,9 @@
 package io.github.biezhi.wechat.model;
 
-import io.github.biezhi.wechat.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,6 +14,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+
+import com.google.gson.annotations.Since;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.github.biezhi.wechat.Utils;
 
 /**
  * 环境配置读取
@@ -140,7 +143,7 @@ public class Environment {
         }
         try {
             Environment environment = new Environment();
-            environment.props.load(is);
+            environment.props.load(new InputStreamReader(is, "utf-8"));
             return environment;
         } catch (IOException e) {
             throw new IllegalStateException(e);
@@ -148,7 +151,6 @@ public class Environment {
             Utils.closeQuietly(is);
         }
     }
-
 
     /**
      * Returns current thread's context class loader

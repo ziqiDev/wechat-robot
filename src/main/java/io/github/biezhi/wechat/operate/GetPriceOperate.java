@@ -5,11 +5,15 @@ import com.alibaba.fastjson.JSONObject;
 import io.github.biezhi.wechat.util.HttpUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Created on 2017/7/14.
  */
 @Slf4j
 public class GetPriceOperate implements Runnable {
+    private static final Map<String,String> price = new ConcurrentHashMap<String, String>();
     private static final Integer TIME_OUT = 5000;
     private static final String BTC_BTCLTC = "https://data.btcchina.com/data/ticker?market=all";
     private static final String BTC_ETH = "https://plus-api.btcchina.com/account/market/ETHCNY";
@@ -21,7 +25,7 @@ public class GetPriceOperate implements Runnable {
     public void run() {
         while (true) {
             try {
-                getPrice();
+                getPriceFromWeb();
                 Thread.sleep(1000);
             } catch (Exception e) {
                 log.error("获取价格出错", e);
@@ -30,7 +34,7 @@ public class GetPriceOperate implements Runnable {
         }
     }
 
-    private void getPrice() {
+    private void getPriceFromWeb() {
         String btc_btcAndltc = HttpUtils.getContentForGet(BTC_BTCLTC, TIME_OUT);
         String btc_btc_last = JSONObject.parseObject(btc_btcAndltc).getJSONObject("ticker_btccny").getString("last");
         String btc_ltc_last = JSONObject.parseObject(btc_btcAndltc).getJSONObject("ticker_ltccny").getString("last");
@@ -43,11 +47,14 @@ public class GetPriceOperate implements Runnable {
         String huobi_eth = HttpUtils.getContentForGet(HUOBI_ETH, TIME_OUT);
         String huobi_eth_last = JSONObject.parseObject(huobi_eth).getJSONObject("tick").getJSONArray("data")
                 .getJSONObject(0).getString("price");
-        PriceCache.setPrice("比特币中国比特币价格", btc_btc_last);
-        PriceCache.setPrice("比特币中国莱特币价格", btc_ltc_last);
-        PriceCache.setPrice("比特币中国以太币价格", btc_eth_last);
-        PriceCache.setPrice("火币网比特币价格", huobi_btc_last);
-        PriceCache.setPrice("火币网莱特币价格", huobi_ltc_last);
-        PriceCache.setPrice("火币网以太币价格", huobi_eth_last);
+        price.put("比特币中国比特币价格", btc_btc_last);
+        price.put("比特币中国莱特币价格", btc_ltc_last);
+        price.put("比特币中国以太币价格", btc_eth_last);
+        price.put("火币网比特币价格", huobi_btc_last);
+        price.put("火币网莱特币价格", huobi_ltc_last);
+        price.put("火币网以太币价格", huobi_eth_last);
+    }
+    public static String getPrice(){
+        return price.toString();
     }
 }

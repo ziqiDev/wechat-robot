@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import io.github.biezhi.wechat.model.Environment;
 import io.github.biezhi.wechat.model.GroupMessage;
 import io.github.biezhi.wechat.model.UserMessage;
+import io.github.biezhi.wechat.operate.GetPriceOperate;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -38,8 +39,10 @@ public class BtcMessageHandler implements MessageHandle {
         String text = userMessage.getText();
         JsonObject raw_msg = userMessage.getRawMsg();
         String toUid = raw_msg.get("FromUserName").getAsString();
-        if(text.startsWith("btc")&&ipwhiteList.contains(userMessage.getWechatApi().getUserById(toUid).get("showName"))){
-            userMessage.sendText("当前比特币价格为：100",toUid);
+        String message = userMessage.getWechatApi().getUserById(toUid).get("showName");
+//        &&ipwhiteList.contains(userMessage.getWechatApi().getUserById(toUid).get("showName"))
+        if(text.startsWith("btc")){
+            userMessage.sendText("当前比特币价格为："+ GetPriceOperate.getPrice(),toUid);
         }
         log.info(raw_msg.toString());
         log.info(toUid);
