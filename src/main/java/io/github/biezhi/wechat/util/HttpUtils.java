@@ -102,6 +102,8 @@ public class HttpUtils {
         System.out.println(iocCnyObject);
         System.out.println(iocCnyObject.getString("p_new"));
 */
+
+        String yunbiBtc = "http://yunbi.com/v2/markets";
     }
 
 }

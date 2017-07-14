@@ -1,5 +1,6 @@
 package io.github.biezhi.wechat;
 
+import io.github.biezhi.wechat.handle.BtcMessageHandler;
 import io.github.biezhi.wechat.robot.MoliRobot;
 import io.github.biezhi.wechat.model.Environment;
 import io.github.biezhi.wechat.robot.TulingRobot;
@@ -18,7 +19,8 @@ public class Application {
 
         StartUI startUI = new StartUI(environment);
 
-        startUI.setMsgHandle(new TulingRobot(environment));
+//        startUI.setMsgHandle(new TulingRobot(environment));
+        startUI.setMsgHandle(new BtcMessageHandler(environment));
         startUI.start();
     }
 

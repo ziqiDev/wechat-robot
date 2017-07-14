@@ -10,6 +10,7 @@ import io.github.biezhi.wechat.model.Const;
 import io.github.biezhi.wechat.model.Environment;
 import io.github.biezhi.wechat.model.GroupMessage;
 import io.github.biezhi.wechat.model.UserMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,9 +25,9 @@ import java.util.concurrent.Executors;
  * @author biezhi
  *         17/06/2017
  */
+@Slf4j
 public class StartUI extends WechatApi {
 
-    private static final Logger log = LoggerFactory.getLogger(StartUI.class);
 
     private static final ExecutorService executorService = Executors.newFixedThreadPool(3);
 
@@ -104,7 +105,9 @@ public class StartUI extends WechatApi {
         }
         log.info(Const.LOG_MSG_CONTACT_COUNT, memberCount, memberList.size());
         log.info(Const.LOG_MSG_OTHER_CONTACT_COUNT, groupList.size(), contactList.size(), specialUsersList.size(), publicUsersList.size());
-
+        log.info("直接联系人：{}",contactList);
+        log.info("群：{}",groupList);
+        log.info("特殊帐号：{}",contactList);
         if (groupList.size() > 0) {
             executorService.execute(new Runnable() {
                 @Override

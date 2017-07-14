@@ -80,14 +80,6 @@ public class UserMessage {
         this.wechatApi = wechatApi;
     }
 
-    @Override
-    public String toString() {
-        return "UserMessage(" +
-                "location='" + location + '\'' +
-                ", log='" + log + '\'' +
-                ", text='" + text + '\'' +
-                ')';
-    }
 
     public String getMsgId() {
         return msgId;
@@ -129,4 +121,18 @@ public class UserMessage {
         wechatApi.sendText(msg, uid);
     }
 
+    @Override
+    public String toString() {
+        return "UserMessage{" +
+                "rawMsg=" + rawMsg +
+                ", location='" + location + '\'' +
+                ", msgId='" + msgId + '\'' +
+                ", msgType='" + msgType + '\'' +
+                ", log='" + log + '\'' +
+                ", text='" + text + '\'' +
+                ", fromUserName='" + fromUserName + '\'' +
+                ", toUserName='" + toUserName + '\'' +
+                ", wechatApi=" + wechatApi +
+                '}';
+    }
 }
